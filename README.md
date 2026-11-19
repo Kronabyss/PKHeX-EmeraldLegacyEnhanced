@@ -10,7 +10,21 @@ PKHeX modified for the Emerald Legacy Enhanced romhack. Properly reads and edits
 - **Security key moved to SaveBlock2 0x1F8** for Emerald saves (previously 0xAC). This fixes bag, money and coin decoding.
 - **Window title** changed to `PKHEX Emerald Legacy Enhanced by Krona`.
 
-Known gaps: evolutions and species/move/ability name lists have not yet been checked against the Enhanced source, and the test suite still expects standard Gen 3 data.
+- **Evolutions** replaced with Enhanced `evolution.h` values (22 species changed).
+- **Species and item names** checked against the Enhanced source. Four move names keep PKHeX's official spelling.
+- **Emerald trainer header** shifted by 4 bytes (`HeaderShift`) to match Enhanced saves, and the security key is read from 0xB0.
+
+## Status
+
+- Core test suite: 368 passed, 1 failed (`TestPublicFiles` on a Gen 4 transfer file: Camerupt's Gen 3 ability changed in Enhanced), 1 skipped.
+
+## To do
+
+- [ ] Confirm the trainer name, trainer ID, money and bag counts display correctly in the app on a real Enhanced save.
+- [ ] Update or remove the Camerupt test file so it matches Enhanced's ability data.
+- [ ] Check the remaining SaveBlock2 fields (E-Reader trainer data and other offsets not covered by the Joyful Jump check).
+- [ ] Translate the new item names (Mints, Ability Capsule, EXP. All, Shiny Charm, Brick Piece) for non-English languages; the English name is used for now.
+- [ ] Decide whether to rename `PKHeX.exe` to match the window title.
 
 ## Download
 
