@@ -353,8 +353,8 @@ public abstract class SAV3 : SaveFile, ILangDeviantSave, IEventFlag37, IBoxDetai
 
     public sealed override byte Gender
     {
-        get => Small[8];
-        set => Small[8] = value;
+        get => Small[8 + HeaderShift];
+        set => Small[8 + HeaderShift] = value;
     }
 
     public sealed override uint ID32
