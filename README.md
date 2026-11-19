@@ -24,7 +24,6 @@ PKHeX modified for the Emerald Legacy Enhanced romhack. Properly reads and edits
 - [ ] Update or remove the Camerupt test file so it matches Enhanced's ability data.
 - [ ] Check the remaining SaveBlock2 fields (E-Reader trainer data and other offsets not covered by the Joyful Jump check).
 - [ ] Translate the new item names (Mints, Ability Capsule, EXP. All, Shiny Charm, Brick Piece) for non-English languages; the English name is used for now.
-- [ ] Decide whether to rename `PKHeX.exe` to match the window title.
 
 ## Download
 
