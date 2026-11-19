@@ -23,6 +23,8 @@ public partial class SAV_SimpleTrainer : Form
         B_MaxCoins.Click += (_, _) => MT_Coins.Text = SAV.MaxCoins.ToString();
         MT_Money.Mask = "".PadRight((int)Math.Floor(Math.Log10(SAV.MaxMoney) + 1), '0');
         MT_Coins.Mask = "".PadRight((int)Math.Floor(Math.Log10(SAV.MaxCoins) + 1), '0');
+        foreach (var mt in new[] { MT_Money, MT_Coins, MT_TID, MT_SID, MT_Hours, MT_Minutes, MT_Seconds, MT_PikaBeach, MT_PikaFriend })
+            mt.HidePromptOnLeave = true;
 
         CB_Gender.Items.Clear();
         CB_Gender.Items.AddRange(Main.GenderSymbols.Take(2).ToArray()); // m/f depending on unicode selection
