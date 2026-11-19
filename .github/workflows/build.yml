@@ -1,0 +1,33 @@
+name: Build PKHeX Emerald Legacy Enhanced
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Publish WinForms (Release, win-x64)
+        run: >
+          dotnet publish PKHeX.WinForms/PKHeX.WinForms.csproj
+          -c Release
+          -r win-x64
+          --self-contained false
+          -o publish
+
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: PKHeX-Emerald-Legacy-Enhanced
+          path: publish
+          if-no-files-found: error
