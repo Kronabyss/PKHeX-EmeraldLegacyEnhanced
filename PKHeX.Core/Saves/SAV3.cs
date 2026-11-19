@@ -11,6 +11,9 @@ namespace PKHeX.Core;
 public abstract class SAV3 : SaveFile, ILangDeviantSave, IEventFlag37, IBoxDetailName, IBoxDetailWallpaper, IDaycareStorage, IDaycareEggState, IDaycareExperience
 {
     protected internal sealed override string ShortSummary => $"{OT} ({Version}) - {PlayTimeString}";
+
+    /// <summary>Extra bytes at the start of the SaveBlock2 header (Enhanced Emerald adds 4).</summary>
+    protected virtual int HeaderShift => 0;
     public sealed override string Extension => ".sav";
 
     public int SaveRevision => Japanese ? 0 : 1;
@@ -54,7 +57,7 @@ public abstract class SAV3 : SaveFile, ILangDeviantSave, IEventFlag37, IBoxDetai
         // OT name is the first 8 bytes of Small. The game fills any unused characters with 0xFF.
         // Japanese games are limited to 5 character OT names; INT 7 characters. +1 0xFF terminator.
         // Since JPN games don't touch the last 2 bytes (alignment), they end up as zeroes!
-        Japanese = ReadInt16LittleEndian(Small.AsSpan(0x6)) == 0;
+        Japanese = ReadInt16LittleEndian(Small.AsSpan(0x6 + HeaderShift)) == 0;
     }
 
     private void ReadSectors(ReadOnlySpan<byte> data, int group)
@@ -332,7 +335,7 @@ public abstract class SAV3 : SaveFile, ILangDeviantSave, IEventFlag37, IBoxDetai
 
     public abstract uint SecurityKey { get; set; }
 
-    public Span<byte> OriginalTrainerTrash => Small.AsSpan(0, 8);
+    public Span<byte> OriginalTrainerTrash => Small.AsSpan(HeaderShift, 8);
 
     public sealed override string OT
     {
@@ -356,44 +359,44 @@ public abstract class SAV3 : SaveFile, ILangDeviantSave, IEventFlag37, IBoxDetai
 
     public sealed override uint ID32
     {
-        get => ReadUInt32LittleEndian(Small.AsSpan(0x0A));
-        set => WriteUInt32LittleEndian(Small.AsSpan(0x0A), value);
+        get => ReadUInt32LittleEndian(Small.AsSpan(0x0A + HeaderShift));
+        set => WriteUInt32LittleEndian(Small.AsSpan(0x0A + HeaderShift), value);
     }
 
     public sealed override ushort TID16
     {
-        get => ReadUInt16LittleEndian(Small.AsSpan(0xA));
-        set => WriteUInt16LittleEndian(Small.AsSpan(0xA), value);
+        get => ReadUInt16LittleEndian(Small.AsSpan(0xA + HeaderShift));
+        set => WriteUInt16LittleEndian(Small.AsSpan(0xA + HeaderShift), value);
     }
 
     public sealed override ushort SID16
     {
-        get => ReadUInt16LittleEndian(Small.AsSpan(0xC));
-        set => WriteUInt16LittleEndian(Small.AsSpan(0xC), value);
+        get => ReadUInt16LittleEndian(Small.AsSpan(0xC + HeaderShift));
+        set => WriteUInt16LittleEndian(Small.AsSpan(0xC + HeaderShift), value);
     }
 
     public sealed override int PlayedHours
     {
-        get => ReadUInt16LittleEndian(Small.AsSpan(0xE));
-        set => WriteUInt16LittleEndian(Small.AsSpan(0xE), (ushort)value);
+        get => ReadUInt16LittleEndian(Small.AsSpan(0xE + HeaderShift));
+        set => WriteUInt16LittleEndian(Small.AsSpan(0xE + HeaderShift), (ushort)value);
     }
 
     public sealed override int PlayedMinutes
     {
-        get => Small[0x10];
-        set => Small[0x10] = (byte)value;
+        get => Small[0x10 + HeaderShift];
+        set => Small[0x10 + HeaderShift] = (byte)value;
     }
 
     public sealed override int PlayedSeconds
     {
-        get => Small[0x11];
-        set => Small[0x11] = (byte)value;
+        get => Small[0x11 + HeaderShift];
+        set => Small[0x11 + HeaderShift] = (byte)value;
     }
 
     public int PlayedFrames
     {
-        get => Small[0x12];
-        set => Small[0x12] = (byte)value;
+        get => Small[0x12 + HeaderShift];
+        set => Small[0x12 + HeaderShift] = (byte)value;
     }
 
     #region Event Flag/Event Work
@@ -681,7 +684,7 @@ public abstract class SAV3 : SaveFile, ILangDeviantSave, IEventFlag37, IBoxDetai
     /// <summary> Only used in Emerald. </summary>
     public Memory<byte> GetFinalExternalData() => Data.AsMemory(0x1F000, SIZE_SECTOR_USED);
 
-    public bool IsCorruptPokedexFF() => MemoryMarshal.Read<ulong>(Small.AsSpan(0xAC)) == ulong.MaxValue;
+    public bool IsCorruptPokedexFF() => MemoryMarshal.Read<ulong>(Small.AsSpan(0xAC + HeaderShift)) == ulong.MaxValue;
 
     public override void CopyChangesFrom(SaveFile sav)
     {

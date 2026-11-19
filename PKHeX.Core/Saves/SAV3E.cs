@@ -47,10 +47,12 @@ public sealed class SAV3E : SAV3, IGen3Hoenn, IGen3Joyful, IGen3Wonder, IDaycare
         }
     }
 
+    protected override int HeaderShift => 4;
+
     public override uint SecurityKey
     {
-        get => ReadUInt32LittleEndian(Small.AsSpan(0x1F8));
-        set => WriteUInt32LittleEndian(Small.AsSpan(0x1F8), value);
+        get => ReadUInt32LittleEndian(Small.AsSpan(0xAC + HeaderShift));
+        set => WriteUInt32LittleEndian(Small.AsSpan(0xAC + HeaderShift), value);
     }
 
     public RTC3 ClockInitial
