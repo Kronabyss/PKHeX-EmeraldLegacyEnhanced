@@ -35,6 +35,18 @@ To get a build of the latest code without a release, open the **Actions** tab, c
 
 **Warning:** this build reads Emerald saves using the Enhanced layout. Standard Emerald saves will not load correctly.
 
+## Build your own copy with GitHub Actions
+
+You can build this project yourself on GitHub without installing anything locally.
+
+1. **Fork the repository.** Click **Fork** at the top of the repository page and create a copy under your account.
+2. **Enable Actions on your fork.** Open the **Actions** tab. If GitHub asks, click **I understand my workflows, go ahead and enable them**.
+3. **Run the build.** Go to **Actions → Build PKHeX Emerald Legacy Enhanced**, click **Run workflow**, and choose the `master` branch. The workflow also runs automatically each time you push to `master`.
+4. **Download the result.** When the run finishes (a few minutes), open it and download the **PKHeX-Emerald-Legacy-Enhanced** artifact from the bottom of the page. Unzip it and run `PKHeX.exe`. You need to be signed in to GitHub to download artifacts.
+5. **Make a release (optional).** Push a version tag such as `v1.0.0` to your fork, either from GitHub Desktop or with `git tag v1.0.0` and `git push origin v1.0.0`. The workflow then publishes the zip on your fork's **Releases** page, where anyone can download it without signing in.
+
+To change the code, edit it on your fork (or clone it and push your changes). Each push to `master` rebuilds the app.
+
 ## Credits
 
 - **cp1835** — created the PKHeX Emerald Legacy fork this project builds on.
