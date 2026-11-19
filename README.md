@@ -1,5 +1,3 @@
 PKHeX-EmeraldLegacy
 =====
-PKHeX, but modified for the Emerald Legacy romhack. Properly reads and edits bag inventory.
-
-Download the .exe from release 0.2 and run.
+PKHeX EmeraldLegacy, but modified for the Emerald Legacy Enhanced romhack. Properly reads and edits bag inventory.
