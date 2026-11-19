@@ -11,3 +11,9 @@ PKHeX modified for the Emerald Legacy Enhanced romhack. Properly reads and edits
 - **Window title** changed to `PKHEX Emerald Legacy Enhanced by Krona`.
 
 Known gaps: evolutions and species/move/ability name lists have not yet been checked against the Enhanced source, and the test suite still expects standard Gen 3 data.
+
+## Credits
+
+- **cp1835** — created the PKHeX Emerald Legacy fork this project builds on.
+- **Kurt (Kaphotics)** — original PKHeX author.
+- **Krona (Kronabyss)** — Emerald Legacy Enhanced changes in this fork.
