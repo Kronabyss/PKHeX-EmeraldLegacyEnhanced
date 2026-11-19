@@ -12,6 +12,19 @@ PKHeX modified for the Emerald Legacy Enhanced romhack. Properly reads and edits
 
 Known gaps: evolutions and species/move/ability name lists have not yet been checked against the Enhanced source, and the test suite still expects standard Gen 3 data.
 
+## Download
+
+Go to the **Releases** page of this repository and download `PKHeX-Emerald-Legacy-Enhanced.zip` from the latest release. No GitHub login is needed.
+
+1. Unzip the file anywhere you like.
+2. Run `PKHeX.exe`.
+
+You need the [.NET 9 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/9.0) (Windows x64). If the app won't start, install it and try again.
+
+To get a build of the latest code without a release, open the **Actions** tab, click the latest **Build PKHeX Emerald Legacy Enhanced** run on `master`, and download the **PKHeX-Emerald-Legacy-Enhanced** artifact. Artifacts need you to be signed in to GitHub.
+
+**Warning:** this build reads Emerald saves using the Enhanced layout. Standard Emerald saves will not load correctly.
+
 ## Credits
 
 - **cp1835** — created the PKHeX Emerald Legacy fork this project builds on.
