@@ -874,7 +874,7 @@ public partial class Main : Form
         var v = Program.CurrentVersion;
         string version = $"{2000+v.Major:00}{v.Minor:00}{v.Build:00}";
 #endif
-        return $"PKH{(HaX ? "a" : "e")}X ({version})";
+        return $"PKH{(HaX ? "a" : "E")}X Emerald Legacy Enhanced by Krona ({version})";
     }
 
     private static string GetProgramTitle(SaveFile sav)

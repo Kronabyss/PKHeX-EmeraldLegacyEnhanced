@@ -19,17 +19,17 @@ public sealed class SAV3E : SAV3, IGen3Hoenn, IGen3Joyful, IGen3Wonder, IDaycare
     public override int EventWorkCount => 0x100;
     protected override int DaycareSlotSize => SIZE_STORED + 0x3C; // 0x38 mail + 4 exp
     protected override int EggEventFlag => 0x86;
-    protected override int BadgeFlagStart => 0x867;
+    protected override int BadgeFlagStart => 0x86F;
 
     public SAV3E(byte[] data) : base(data) => Initialize();
     public SAV3E(bool japanese = false) : base(japanese) => Initialize();
 
-    protected override int EventFlag => 0x13D8;
-    protected override int EventWork => 0x1504;
+    protected override int EventFlag => 0x13E0;
+    protected override int EventWork => 0x150C;
     public override int MaxItemID => Legal.MaxItemID_3_E;
 
     protected override int PokeDex => 0x18; // small
-    protected override int DaycareOffset => 0x3198; // large
+    protected override int DaycareOffset => 0x31A0; // large
 
     // storage
     private void Initialize() => Box = 0;
@@ -49,8 +49,8 @@ public sealed class SAV3E : SAV3, IGen3Hoenn, IGen3Joyful, IGen3Wonder, IDaycare
 
     public override uint SecurityKey
     {
-        get => ReadUInt32LittleEndian(Small.AsSpan(0xAC));
-        set => WriteUInt32LittleEndian(Small.AsSpan(0xAC), value);
+        get => ReadUInt32LittleEndian(Small.AsSpan(0x1F8));
+        set => WriteUInt32LittleEndian(Small.AsSpan(0x1F8), value);
     }
 
     public RTC3 ClockInitial
@@ -106,30 +106,30 @@ public sealed class SAV3E : SAV3, IGen3Hoenn, IGen3Joyful, IGen3Wonder, IDaycare
     #endregion
 
     #region Large
-    public override int PartyCount { get => Large[0x234]; protected set => Large[0x234] = (byte)value; }
-    public override int GetPartyOffset(int slot) => 0x238 + (SIZE_PARTY * slot);
+    public override int PartyCount { get => Large[0x23C]; protected set => Large[0x23C] = (byte)value; }
+    public override int GetPartyOffset(int slot) => 0x240 + (SIZE_PARTY * slot);
 
     public override uint Money
     {
-        get => ReadUInt32LittleEndian(Large.AsSpan(0x0490)) ^ SecurityKey;
-        set => WriteUInt32LittleEndian(Large.AsSpan(0x0490), value ^ SecurityKey);
+        get => ReadUInt32LittleEndian(Large.AsSpan(0x0498)) ^ SecurityKey;
+        set => WriteUInt32LittleEndian(Large.AsSpan(0x0498), value ^ SecurityKey);
     }
 
     public override uint Coin
     {
-        get => (ushort)(ReadUInt16LittleEndian(Large.AsSpan(0x0494)) ^ SecurityKey);
-        set => WriteUInt16LittleEndian(Large.AsSpan(0x0494), (ushort)(value ^ SecurityKey));
+        get => (ushort)(ReadUInt16LittleEndian(Large.AsSpan(0x049C)) ^ SecurityKey);
+        set => WriteUInt16LittleEndian(Large.AsSpan(0x049C), (ushort)(value ^ SecurityKey));
     }
 
-    private const int OFS_PCItem = 0x0498;
-    private const int OFS_PouchHeldItem = 0x0560;
-    private const int OFS_PouchKeyItem = 0x0740;
-    private const int OFS_PouchBalls = 0x07B8;
-    private const int OFS_PouchTMHM = 0x07F8;
-    private const int OFS_PouchBerry = 0x08F8;
-    private const int OFS_BerryBlenderRecord = 0xB24;
-    private const int OFS_TrendyWord = 0x2F88;
-    private const int OFS_TrainerHillRecord = 0x3718;
+    private const int OFS_PCItem = 0x04A0;
+    private const int OFS_PouchHeldItem = 0x0568;
+    private const int OFS_PouchKeyItem = 0x0748;
+    private const int OFS_PouchBalls = 0x07C0;
+    private const int OFS_PouchTMHM = 0x0800;
+    private const int OFS_PouchBerry = 0x0900;
+    private const int OFS_BerryBlenderRecord = 0xB2C;
+    private const int OFS_TrendyWord = 0x2F90;
+    private const int OFS_TrainerHillRecord = 0x3720;
 
     protected override InventoryPouch3[] GetItems()
     {
@@ -146,7 +146,7 @@ public sealed class SAV3E : SAV3, IGen3Hoenn, IGen3Joyful, IGen3Wonder, IDaycare
         ];
     }
 
-    private Span<byte> PokeBlockData => Large.AsSpan(0x9B0, PokeBlock3Case.SIZE);
+    private Span<byte> PokeBlockData => Large.AsSpan(0x9B8, PokeBlock3Case.SIZE);
 
     public PokeBlock3Case PokeBlocks
     {
@@ -154,11 +154,11 @@ public sealed class SAV3E : SAV3, IGen3Hoenn, IGen3Joyful, IGen3Wonder, IDaycare
         set => value.Write(PokeBlockData);
     }
 
-    protected override int SeenOffset2 => 0xAF0;
+    protected override int SeenOffset2 => 0xAF8;
 
-    public DecorationInventory3 Decorations => new(Large.AsSpan(0x289C, DecorationInventory3.SIZE));
+    public DecorationInventory3 Decorations => new(Large.AsSpan(0x28A4, DecorationInventory3.SIZE));
 
-    private Span<byte> SwarmSpan => Large.AsSpan(0x2CF8, Swarm3.SIZE);
+    private Span<byte> SwarmSpan => Large.AsSpan(0x2D00, Swarm3.SIZE);
     public Swarm3 Swarm
     {
         get => new(SwarmSpan.ToArray());
@@ -182,7 +182,7 @@ public sealed class SAV3E : SAV3, IGen3Hoenn, IGen3Joyful, IGen3Wonder, IDaycare
         }
     }
 
-    protected override int MailOffset => 0x2D48;
+    protected override int MailOffset => 0x2D50;
 
     protected override int GetDaycareEXPOffset(int slot) => GetDaycareSlotOffset(slot + 1) - 4; // @ end of each pk slot
     uint IDaycareRandomState<uint>.Seed // after the 2 slots, before the step counter
@@ -191,7 +191,7 @@ public sealed class SAV3E : SAV3, IGen3Hoenn, IGen3Joyful, IGen3Wonder, IDaycare
         set => WriteUInt32LittleEndian(Large.AsSpan(GetDaycareEXPOffset(2)), value);
     }
 
-    protected override int ExternalEventData => 0x331B;
+    protected override int ExternalEventData => 0x3323;
 
     /// <summary>
     /// Max RPM for 2, 3 and 4 players. Each value unit represents 0.01 RPM. Value 0 if no record.
@@ -238,7 +238,7 @@ public sealed class SAV3E : SAV3, IGen3Hoenn, IGen3Joyful, IGen3Wonder, IDaycare
     }
 
     #region eBerry
-    private const int OFFSET_EBERRY = 0x3360;
+    private const int OFFSET_EBERRY = 0x3368;
     private const int SIZE_EBERRY = 0x34;
 
     public override Span<byte> EReaderBerry() => Large.AsSpan(OFFSET_EBERRY, SIZE_EBERRY);
@@ -249,7 +249,7 @@ public sealed class SAV3E : SAV3, IGen3Hoenn, IGen3Joyful, IGen3Wonder, IDaycare
     #endregion
 
     public int WonderOffset => WonderNewsOffset;
-    private const int WonderNewsOffset = 0x3394;
+    private const int WonderNewsOffset = 0x339C;
     private int WonderCardOffset => WonderNewsOffset + (Japanese ? WonderNews3.SIZE_JAP : WonderNews3.SIZE);
     private int WonderCardExtraOffset => WonderCardOffset + (Japanese ? WonderCard3.SIZE_JAP : WonderCard3.SIZE);
 
@@ -264,29 +264,29 @@ public sealed class SAV3E : SAV3, IGen3Hoenn, IGen3Joyful, IGen3Wonder, IDaycare
     // 0x340: news MENewsJisanStruct
     // 0x344: uint[5], uint[5] tracking?
 
-    private Span<byte> MysterySpan => Large.AsSpan(0x3728, MysteryEvent3.SIZE);
+    private Span<byte> MysterySpan => Large.AsSpan(0x3730, MysteryEvent3.SIZE);
     public override Gen3MysteryData MysteryData
     {
         get => new MysteryEvent3(MysterySpan.ToArray());
         set => SetData(MysterySpan, value.Data);
     }
 
-    private Span<byte> RecordMixingData => Large.AsSpan(0x3B14, RecordMixing3Gift.SIZE);
+    private Span<byte> RecordMixingData => Large.AsSpan(0x3B1C, RecordMixing3Gift.SIZE);
     public RecordMixing3Gift RecordMixingGift { get => new(RecordMixingData.ToArray()); set => SetData(RecordMixingData, value.Data); }
 
-    protected override int SeenOffset3 => 0x3B24;
+    protected override int SeenOffset3 => 0x3B2C;
 
-    private const int Walda = 0x3D70;
+    private const int Walda = 0x3D78;
     public ushort WaldaBackgroundColor { get => ReadUInt16LittleEndian(Large.AsSpan(Walda + 0)); set => WriteUInt16LittleEndian(Large.AsSpan(Walda + 0), value); }
     public ushort WaldaForegroundColor { get => ReadUInt16LittleEndian(Large.AsSpan(Walda + 2)); set => WriteUInt16LittleEndian(Large.AsSpan(Walda + 2), value); }
     public byte WaldaIconID { get => Large[Walda + 0x14]; set => Large[Walda + 0x14] = value; }
     public byte WaldaPatternID { get => Large[Walda + 0x15]; set => Large[Walda + 0x15] = value; }
     public bool WaldaUnlocked { get => Large[Walda + 0x16] != 0; set => Large[Walda + 0x16] = (byte)(value ? 1 : 0); }
 
-    private Memory<byte> SecretBaseData => Large.AsMemory(0x1C04, SecretBaseManager3.BaseCount * SecretBase3.SIZE);
+    private Memory<byte> SecretBaseData => Large.AsMemory(0x1C0C, SecretBaseManager3.BaseCount * SecretBase3.SIZE);
     public SecretBaseManager3 SecretBases => new(SecretBaseData);
 
-    private const int Painting = 0x2F90;
+    private const int Painting = 0x2F98;
     private const int CountPaintings = 5;
     private Span<byte> GetPaintingSpan(int index)
     {

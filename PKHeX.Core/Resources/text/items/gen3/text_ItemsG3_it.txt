@@ -375,3 +375,27 @@ Rubino
 Zaffiro
 Stemma Magma
 Mappa Stinta
+Adamant Mint
+Bold Mint
+Brave Mint
+Calm Mint
+Careful Mint
+Gentle Mint
+Hasty Mint
+Impish Mint
+Jolly Mint
+Lax Mint
+Lonely Mint
+Mild Mint
+Modest Mint
+Naive Mint
+Naughty Mint
+Quiet Mint
+Rash Mint
+Relaxed Mint
+Sassy Mint
+Serious Mint
+Timid Mint
+Ability Capsule
+EXP. All
+Shiny Charm
